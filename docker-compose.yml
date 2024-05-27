@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: database
+    image: postgres:16.3
+    restart: always
+    environment:
+      POSTGRES_USER: joniba
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: todo-list
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+volumes:
+  db-volume:
