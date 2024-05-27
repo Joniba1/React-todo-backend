@@ -15,7 +15,7 @@ This repository contains the backend API designed to handle requests from the To
 
 To initiate the API for the first time, follow the next steps:
 
-1. [Download Docker Desktop](https://www.docker.com/products/docker-desktop).
+1. If you haven't already [download Docker Desktop](https://www.docker.com/products/docker-desktop).
 2. Clone this repository to your local machine.
 3. Navigate to the cloned repository directory in your CMD or terminal.
 4. Execute the following command:
