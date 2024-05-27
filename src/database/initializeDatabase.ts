@@ -1,16 +1,14 @@
-// databaseInitializer.js
-
 import Knex from 'knex';
 import knexConfig from './knexfile';
 
 const database = Knex(knexConfig);
 
-export const createTables = async () => {
+const createTables = async () => {
   const usersTableExists = await database.schema.hasTable('users');
   const tasksTableExists = await database.schema.hasTable('tasks');
 
   if (!usersTableExists) {
-    await database.schema.createTable('users', function (table) {
+    await database.schema.createTable('users', (table) => {
       table.string('username', 15).notNullable().primary();
       table.string('password', 60).notNullable();
     });

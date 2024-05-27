@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import Knex from 'knex';
 import knexConfig from '../database/knexfile';
 import { Task } from '../types';
-import { validateToken } from '../auth/auth';
+import { validateToken } from '../auth/jwt';
 
 const database = Knex(knexConfig);
 const router = new Router();

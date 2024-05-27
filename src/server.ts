@@ -6,36 +6,30 @@ import tasks from './tasks/tasks.controller';
 import tasksUtilities from './tasks/tasks-utilities.controller';
 import helmet from 'koa-helmet';
 import { initializeDatabase } from './database/initializeDatabase';
+import dotenv from 'dotenv';
 
-import Knex from 'knex';
-import knexConfig from './database/knexfile';
-
-const database = Knex(knexConfig);
+dotenv.config();
 
 const app = new Koa();
-const port = process.env.PORT || 3001;
-const base_url = 'http://localhost';
+const api_port = process.env.API_PORT;
+const base_url = process.env.BASE_URL;
+const frontend_port = process.env.FRONTEND_PORT;
 
 initializeDatabase()
   .then(() => {
     app.use(helmet());
     app.use(bodyParser());
     app.use(cors({
-      origin: 'http://localhost:5173',
+      origin: `${base_url}${frontend_port}`,
       credentials: true,
     }));
 
     app.use(auth.routes());
     app.use(tasks.routes());
     app.use(tasksUtilities.routes());
-    
 
-    app.use( async (ctx) => {
-      ctx.body = 'Hello, world!';
-    });
-
-    app.listen(port, () => {
-      console.log(`Server is running at ${base_url}:${port}`);
+    app.listen(api_port, () => {
+      console.log(`Server is running at ${base_url}${api_port}`);
     });
 
     app.on('error', (err, ctx) => {

@@ -3,35 +3,10 @@ import Knex from 'knex';
 import knexConfig from '../database/knexfile';
 import Router from 'koa-router';
 import { User } from '../types';
-import { Context, Next } from 'koa';
-import jwt from 'jsonwebtoken';
-
+import { generateToken } from './jwt';
 
 const database = Knex(knexConfig);
 const router = new Router();
-const SECRET_KEY = 'cornflakes'; 
-
-export const generateToken = (user: User) => {
-  return jwt.sign({ username: user.username }, SECRET_KEY, { expiresIn: '1h' });
-};
-
-export const validateToken = async (ctx: Context, next: Next) => {
-  const token = ctx.cookies.get('jwt');
-  if (!token) {
-    ctx.status = 401;
-    ctx.response.body = { message: 'Access denied. No token provided.' };
-    return;
-  }
-
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    ctx.state.user = decoded;
-    await next();
-  } catch (error) {
-    ctx.status = 400;
-    ctx.response.body = { message: 'Invalid token.' };
-  }
-};
 
 router.post('/login', async (ctx) => {
   const user = ctx.request.body as User;
@@ -60,7 +35,7 @@ router.post('/login', async (ctx) => {
     }
 
     const token = generateToken(user);
-    
+
     ctx.status = 200;
     ctx.response.body = { message: 'Logged in', token }; // Include the token in the response body
   } catch (error) {
