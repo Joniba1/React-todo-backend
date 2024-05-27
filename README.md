@@ -1,6 +1,15 @@
 # TodoList Backend API
 
-This repository contains the backend API designed to support the TodoList React application.
+This repository contains the backend API designed to handle the requests from the TodoList React application.
+
+## Description
+
+ The backend API provides endpoints for authentication using JWT (login and registration) and handles the manipulation of tasks within the application. The API includes the following functionalities:
+
+- **Authentication:** Users can register new accounts and login using JWTs.
+- **Task Management:** Users can retrieve tasks categorized as completed, irrelevant, and todo. Additionally, they can modify said tasks by editing their description, titles and deadlines as well as marking them as completed, or setting their relevance.
+- **Task Addition:** The API also handles tasks addition.
+- **Search Functionality:** Users can search for specific tasks based on keywords.
 
 ## Getting Started
 
@@ -23,4 +32,4 @@ docker-compose up
 
 ## Usage
 
-To interact with the API effectively, ensure the frontend application is also activated.
+To interact with the API effectively, ensure the [frontend application](https://github.com/Joniba1/React-todo-frontend) is also activated.
