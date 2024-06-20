@@ -6,9 +6,9 @@ import { validateToken } from '../auth/jwt';
 
 const database = Knex(knexConfig);
 const router = new Router();
+router.prefix('/tasks')
 
-
-router.get('/tasks', validateToken, async (ctx) => {
+router.get('', validateToken, async (ctx) => {
     const username: string = ctx.state.user.username;
     try {
         const tasks: Task[] = await database('tasks').where({ username, completed: false, relevance: true }).select('*');
@@ -21,7 +21,7 @@ router.get('/tasks', validateToken, async (ctx) => {
     }
 });
 
-router.get('/tasks/completed', validateToken, async (ctx) => {
+router.get('/completed', validateToken, async (ctx) => {
     const username = ctx.state.user.username;
     try {
         const tasks = await database('tasks').where({ username: username, completed: true, relevance: true }).select('*');
@@ -33,7 +33,7 @@ router.get('/tasks/completed', validateToken, async (ctx) => {
     }
 });
 
-router.get('/tasks/irrelevant', validateToken, async (ctx) => {
+router.get('/irrelevant', validateToken, async (ctx) => {
     const username = ctx.state.user.username;
     try {
         const tasks = await database('tasks').where({ username, relevance: false }).select('*');
