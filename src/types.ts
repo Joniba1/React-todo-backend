@@ -6,10 +6,10 @@ export type User = {
 export type Task = {
     username: string;
     title: string;
-    description: string;
     completed: boolean;
     relevance: boolean;
-    deadline: string | null;
+    deadline: string;
+    description: string;
 };
 
 export type Day = {

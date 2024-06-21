@@ -3,14 +3,39 @@ import Knex from 'knex';
 import knexConfig from '../database/knexfile';
 import { validateToken } from '../auth/jwt';
 import { Task } from '../types';
-import { Context } from 'koa';
-
 
 const database = Knex(knexConfig);
 const router = new Router();
 
+router.put('/tasks/edit', validateToken, async (ctx) => {
+    const username: string = ctx.state.user.username;
+    const { title, updatedTask } = ctx.request.body as { title: string, updatedTask: Task };
+    try {
+        const existingTask: Task = await database('tasks').where({ username: username, title: updatedTask.title }).first();
 
+        if (existingTask && existingTask.title != title) {
+            ctx.status = 400;
+            ctx.response.body = { errorCode: 'DUPLICATE_TASKS' }
+            return;
+        }
 
+        const task: Task = await database('tasks').where({ username: username, title: title }).first();
+
+        if (!task) {
+            ctx.status = 404;
+            ctx.response.body = { message: 'Task not found' };
+            return;
+        }
+
+        const response = await database('tasks').where({ username, title })
+            .update(updatedTask);
+        ctx.status = 200;
+        ctx.response.body = response;
+    } catch (error) {
+        ctx.status = 500;
+        ctx.response.body = { message: 'Error updating task', error };
+    }
+});
 
 router.post('/tasks/add', validateToken, async (ctx) => {
     const username: string = ctx.state.user.username;
