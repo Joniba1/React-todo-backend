@@ -82,7 +82,7 @@ router.get('/tasks/search', validateToken, async (ctx) => {
     }
 
     try {
-        const tasks: Tas    k[] = await database('tasks').where({ username }).select('*');
+        const tasks: Task[] = await database('tasks').where({ username }).select('*');
 
         // const filteredTasks = tasks.filter(task =>
         //     task.title.startsWith(searchReq) || task.description.startsWith(searchReq)
